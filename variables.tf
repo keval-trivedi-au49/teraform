@@ -35,7 +35,7 @@ variable "repo_url" {
 
 variable "repo_branch" {
   type    = string
-  default = "main"
+  default = "backend_infra_with_teraform"
 }
 
 variable "mongo_uri" {
