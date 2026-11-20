@@ -51,7 +51,7 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-resource "aws_instance" "ec2_aws" {
+resource "aws_instance" "ec2_seperate_backend" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
   subnet_id                   = var.subnet_id
@@ -59,10 +59,9 @@ resource "aws_instance" "ec2_aws" {
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
 
-  # Runs once on first boot: installs Docker, clones the repo, builds and starts both apps
   user_data = templatefile("${path.module}/user_data.sh.tftpl", {
     repo_url    = var.repo_url
-    repo_branch = var.repo_branch
+    repo_branch_backend = var.repo_branch_backend
     mongo_uri   = var.mongo_uri
   })
   user_data_replace_on_change = true
@@ -72,6 +71,6 @@ resource "aws_instance" "ec2_aws" {
   }
 
   tags = {
-    Name = "ec2_backend_tf"
+    Name = "ec2_seperate_backend_tf"
   }
 }
